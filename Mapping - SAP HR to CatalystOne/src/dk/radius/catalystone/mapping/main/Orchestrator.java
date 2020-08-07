@@ -40,8 +40,6 @@ public class Orchestrator extends AbstractTransformation {
 		try {
 			this.execute(in.getInputPayload().getInputStream(), out.getOutputPayload().getOutputStream());
 		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			getTrace().addWarning(e.getMessage());
 			throw new StreamTransformationException(e.getMessage());
 		}		
 	}
