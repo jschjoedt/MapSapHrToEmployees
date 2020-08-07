@@ -41,7 +41,8 @@ public class Orchestrator extends AbstractTransformation {
 			this.execute(in.getInputPayload().getInputStream(), out.getOutputPayload().getOutputStream());
 		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			getTrace().addWarning(e.getMessage());
+			throw new StreamTransformationException(e.getMessage());
 		}		
 	}
 }
