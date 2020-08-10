@@ -30,9 +30,9 @@ public class Orchestrator extends AbstractTransformation {
 	}
 
 	public void execute(InputStream in, OutputStream out) throws JAXBException {
-		DO_HRMD_A07 hrmd_a07 = Xml.parse(in);
+		DO_HRMD_A07 hrmd_a07 = Xml.serialize(in);
 		DO_EMPLOYEES employees = Xml.map(hrmd_a07);
-		Xml.write(employees, out);
+		Xml.deserialize(employees, out);
 	}
 	
 	@Override

@@ -21,7 +21,7 @@ public class Xml {
 		return xml;
 	}
 
-	public static DO_HRMD_A07 parse(InputStream xml) throws JAXBException  {		
+	public static DO_HRMD_A07 serialize(InputStream xml) throws JAXBException  {		
 		JAXBContext jaxbContext = JAXBContext.newInstance(DO_HRMD_A07.class);
 		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 
@@ -36,7 +36,7 @@ public class Xml {
 		return employees;
 	}
 
-	public static void write(DO_EMPLOYEES employees, OutputStream os) throws JAXBException {
+	public static void deserialize(DO_EMPLOYEES employees, OutputStream os) throws JAXBException {
 		JAXBContext jaxbContext = JAXBContext.newInstance(DO_EMPLOYEES.class);
 		Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
