@@ -14,16 +14,16 @@ public class Mapper {
 		employees.EMPLOYEE.add(employee);
 		for (DO_E1PITYP type : hrmd_a07.IDOC.E1PLOGI.E1PITYP) {
 
-			if (type.INFTY.equals("0000")) {
+			if (type.INFTY.equals("0000") && type.E1P0000 != null) {
 				employee = mapInfoType0000(employee, type);
 
-			} else if (type.INFTY.equals("0001")) {
+			} else if (type.INFTY.equals("0001") && type.E1P0001 != null) {
 				employee = mapInfoType0001(employee, type);
 
-			} else if (type.INFTY.equals("0002")) {
+			} else if (type.INFTY.equals("0002") && type.E1P0002 != null) {
 				employee = mapInfoType0002(employee, type);
 
-			} else if (type.INFTY.equals("0105")) {
+			} else if (type.INFTY.equals("0105") && type.E1P0105 != null) {
 				employee = mapInfoType0105(employee, type);
 			}
 		}
