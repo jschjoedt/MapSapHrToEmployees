@@ -23,15 +23,25 @@ public class Orchestrator extends AbstractTransformation {
 	private static final String TEST_INPUT_PARAM = "testInput";
 	private static String test_input_value;
 	
+	
+	/**
+	 * Test stub for local testing of Java mapping.
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		Instant startTime = Instant.now();
 		
 		try {
+			// Get and validate runtime parameters
 			handleInputParameters(args);
 			
+			// Load XML test file
 			InputStream is = Xml.load(test_input_value);
+			
+			// Set output
 			OutputStream os = new FileOutputStream(new File("testData/employees.xml"));
 			
+			// Execute mapping logic
 			Orchestrator o = new Orchestrator();
 			o.execute(is, os);
 		} catch (Exception e) {
@@ -43,17 +53,34 @@ public class Orchestrator extends AbstractTransformation {
 		}
 	}
 
+	
+	/**
+	 * TEST: Extract and validate runtime parameters.
+	 * @param args
+	 * @throws InvalidParameterException
+	 */
 	private static void handleInputParameters(String[] args) throws InvalidParameterException {
+		// Exctract runtime parameters
 		extractInputParameters(args);
 		validateInputParameters();
 	}
 
+	
+	/**
+	 * TEST: Validate runtime parameters.
+	 * @throws InvalidParameterException
+	 */
 	private static void validateInputParameters() throws InvalidParameterException {
 		if (test_input_value == null) {
 			throw new InvalidParameterException("Missing \"testInput\" parameter in run configurations");
 		}		
 	}
 
+	
+	/**
+	 * TEST: Extract runtime parameters.
+	 * @param args
+	 */
 	private static void extractInputParameters(String[] args) {
 		for (String s : args) {
 			if (s.contains(TEST_INPUT_PARAM)) {
@@ -62,15 +89,32 @@ public class Orchestrator extends AbstractTransformation {
 		}
 	}
 
+	
+	/**
+	 * Execute Java mapping logic.
+	 * @param in
+	 * @param out
+	 * @throws JAXBException
+	 */
 	public void execute(InputStream in, OutputStream out) throws JAXBException {
+		// Serialize IDoc XML data into corresponding pojo's
 		DO_HRMD_A07 hrmd_a07 = Xml.serialize(in);
+		
+		// Map SAP IDoc input to CatalystOne output
 		DO_EMPLOYEES employees = Xml.map(hrmd_a07);
+		
+		// De-serialize mapped employee pojo's into CatalystOne output 
 		Xml.deserialize(employees, out);
 	}
 	
+	
+	/**
+	 * Main mapping method inherited and overwritten from AbstractTransformation.class.
+	 */
 	@Override
 	public void transform(TransformationInput in, TransformationOutput out) throws StreamTransformationException {
 		try {
+			// Call main mapping method
 			this.execute(in.getInputPayload().getInputStream(), out.getOutputPayload().getOutputStream());
 		} catch (JAXBException e) {
 			throw new StreamTransformationException(e.getMessage());

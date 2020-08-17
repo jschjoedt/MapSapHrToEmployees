@@ -7,10 +7,18 @@ import dk.radius.catalystone.mapping.idoc.DO_E1PITYP;
 import dk.radius.catalystone.mapping.idoc.DO_HRMD_A07;
 
 public class Mapper {
+
+	/**
+	 * Start mapping SAP IDoc data to CatalystOne employee data.
+	 * @param hrmd_a07
+	 * @return
+	 */
 	public static DO_EMPLOYEES start(DO_HRMD_A07 hrmd_a07) {
 		DO_EMPLOYEES employees = new DO_EMPLOYEES();
 		DO_EMPLOYEE employee = new DO_EMPLOYEE();
 
+		// As per agreement with Radius, one IDoc ONLY has one employee
+		// This is easy to change as the "E1PLOGI" IDoc segment will correspond to a new employee in a 1..* scenario
 		employees.EMPLOYEE.add(employee);
 		for (DO_E1PITYP type : hrmd_a07.IDOC.E1PLOGI.E1PITYP) {
 
@@ -31,9 +39,17 @@ public class Mapper {
 			}
 		}
 
+		// Return fully mapped employee object
 		return employees;
 	}
 	
+	
+	/**
+	 * Map info type 0006.
+	 * @param employee
+	 * @param type
+	 * @return
+	 */
 	private static DO_EMPLOYEE mapInfoType0006(DO_EMPLOYEE employee, DO_E1PITYP type) {
 		if (type.SUBTY.equals("1")) {
 			employee = createFildInfo("1006", type.E1P0006.get(0).STRAS, employee);
@@ -49,6 +65,13 @@ public class Mapper {
 		return employee;
 	}
 
+	
+	/**
+	 * Map info type 0105.
+	 * @param employee
+	 * @param type
+	 * @return
+	 */
 	private static DO_EMPLOYEE mapInfoType0105(DO_EMPLOYEE employee, DO_E1PITYP type) {
 		if (type.SUBTY.equals("9950")) {
 			employee.GUID = type.E1P0105.get(0).USRID_LONG;
@@ -59,6 +82,13 @@ public class Mapper {
 		return employee;
 	}
 
+	
+	/**
+	 * Map info type 0002.
+	 * @param employee
+	 * @param type
+	 * @return
+	 */
 	private static DO_EMPLOYEE mapInfoType0002(DO_EMPLOYEE employee, DO_E1PITYP type) {
 		employee = createFildInfo("1092", type.E1P0002.INITS, employee);
 		employee = createFildInfo("2", type.E1P0002.NACHN, employee);
@@ -70,6 +100,13 @@ public class Mapper {
 		return employee;
 	}
 
+	
+	/**
+	 * Map info type 0001.
+	 * @param employee
+	 * @param type
+	 * @return
+	 */
 	private static DO_EMPLOYEE mapInfoType0001(DO_EMPLOYEE employee, DO_E1PITYP type) {
 		employee = createFildInfo("1105", type.E1P0001.KOSTL, employee);
 		employee = createFildInfo("8", type.E1P0001.ORGEH, employee);
@@ -84,6 +121,13 @@ public class Mapper {
 		return employee;
 	}
 
+	
+	/**
+	 * Map info type 0000.
+	 * @param employee
+	 * @param type
+	 * @return
+	 */
 	private static DO_EMPLOYEE mapInfoType0000(DO_EMPLOYEE employee, DO_E1PITYP type) {
 		employee = createFildInfo("1131", type.E1P0000.PERNR, employee);
 		employee = createFildInfo("1029", type.E1P0000.MASSN, employee);
@@ -91,6 +135,13 @@ public class Mapper {
 	}
 
 
+	/**
+	 * Create dynamic "FIELD" element for CatalystOne output
+	 * @param id			CatalystOne id to determine data value (e.g. FirstName = 3, LastName = 2)
+	 * @param value			Value of provided CatalystOne id
+	 * @param employee		Current employee beeing mapped
+	 * @return
+	 */
 	private static DO_EMPLOYEE createFildInfo(String id, String value, DO_EMPLOYEE employee) {
 		if (value != null) {
 			DO_FIELD field = new DO_FIELD();
