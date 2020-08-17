@@ -16,13 +16,16 @@ public class Mapper {
 
 			if (type.INFTY.equals("0000") && type.E1P0000 != null) {
 				employee = mapInfoType0000(employee, type);
-
+				
 			} else if (type.INFTY.equals("0001") && type.E1P0001 != null) {
 				employee = mapInfoType0001(employee, type);
-
+				
 			} else if (type.INFTY.equals("0002") && type.E1P0002 != null) {
 				employee = mapInfoType0002(employee, type);
-
+				
+			} else if (type.INFTY.equals("0006") && type.E1P0006 != null) {
+				employee = mapInfoType0006(employee, type);
+				
 			} else if (type.INFTY.equals("0105") && type.E1P0105 != null) {
 				employee = mapInfoType0105(employee, type);
 			}
@@ -31,6 +34,21 @@ public class Mapper {
 		return employees;
 	}
 	
+	private static DO_EMPLOYEE mapInfoType0006(DO_EMPLOYEE employee, DO_E1PITYP type) {
+		if (type.SUBTY.equals("1")) {
+			employee = createFildInfo("1006", type.E1P0006.get(0).STRAS, employee);
+			employee = createFildInfo("1008", type.E1P0006.get(0).ORT01, employee);
+			employee = createFildInfo("1007", type.E1P0006.get(0).PSTLZ, employee);
+			employee = createFildInfo("24", type.E1P0006.get(0).LAND1, employee);
+			employee = createFildInfo("1003", type.E1P0006.get(0).TELNR, employee);
+			
+		} else if (type.SUBTY.equals("2")) {
+			employee = createFildInfo("1010", type.E1P0006.get(0).NAME2, employee);
+		}
+		
+		return employee;
+	}
+
 	private static DO_EMPLOYEE mapInfoType0105(DO_EMPLOYEE employee, DO_E1PITYP type) {
 		if (type.SUBTY.equals("9950")) {
 			employee.GUID = type.E1P0105.get(0).USRID_LONG;

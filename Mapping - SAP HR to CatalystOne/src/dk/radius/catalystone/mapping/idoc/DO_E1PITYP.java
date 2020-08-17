@@ -18,6 +18,9 @@ public class DO_E1PITYP {
 	@XmlElement(name = "E1P0002")
 	public DO_E1P0002 E1P0002;
 	
+	@XmlElement(name = "E1P0006")
+	public List<DO_E1P0006> E1P0006;
+	
 	@XmlElement(name = "E1P0105")
 	public List<DO_E1P0105> E1P0105;
 		
