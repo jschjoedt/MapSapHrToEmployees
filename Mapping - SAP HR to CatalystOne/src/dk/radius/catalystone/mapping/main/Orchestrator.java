@@ -21,7 +21,9 @@ import dk.radius.catalystone.mapping.util.Xml;
 public class Orchestrator extends AbstractTransformation {
 	
 	private static final String TEST_INPUT_PARAM = "testInput";
-	private static String test_input_value;
+	private static final String TEST_OUTPUT_PARAM = "testOutput";
+	private static String test_input_param_value;
+	private static String test_output_param_value;
 	
 	
 	/**
@@ -32,23 +34,25 @@ public class Orchestrator extends AbstractTransformation {
 		Instant startTime = Instant.now();
 		
 		try {
+			System.out.println("# Running in local test mode...");
 			// Get and validate runtime parameters
 			handleInputParameters(args);
 			
 			// Load XML test file
-			InputStream is = Xml.load(test_input_value);
+			InputStream is = Xml.load(test_input_param_value);
 			
 			// Set output
-			OutputStream os = new FileOutputStream(new File("testData/employees.xml"));
+			OutputStream os = new FileOutputStream(new File(test_output_param_value));
 			
 			// Execute mapping logic
+			System.out.println("# ==> Mapping: Start");
 			Orchestrator o = new Orchestrator();
 			o.execute(is, os);
 		} catch (Exception e) {
 			System.err.println("Oh noooes..." + e.getMessage());
 		} finally {
+			System.out.println("# <== Mapping: End");
 			Instant endTime = Instant.now();
-			
 			System.out.println("# Total runtime: " + Duration.between(startTime, endTime).toMillis() + " ms #");
 		}
 	}
@@ -60,8 +64,10 @@ public class Orchestrator extends AbstractTransformation {
 	 * @throws InvalidParameterException
 	 */
 	private static void handleInputParameters(String[] args) throws InvalidParameterException {
-		// Exctract runtime parameters
+		// Extract runtime parameters
 		extractInputParameters(args);
+		
+		// Validate runtime parameters
 		validateInputParameters();
 	}
 
@@ -71,9 +77,19 @@ public class Orchestrator extends AbstractTransformation {
 	 * @throws InvalidParameterException
 	 */
 	private static void validateInputParameters() throws InvalidParameterException {
-		if (test_input_value == null) {
-			throw new InvalidParameterException("Missing \"testInput\" parameter in run configurations");
-		}		
+		String errorMessage = "";
+		System.out.println("Validating runtime parameters...");
+		
+		if (test_input_param_value == null) {
+			errorMessage = "Missing \"" + TEST_INPUT_PARAM + "\" parameter in run configurations";	
+		} else if(test_output_param_value == null) {
+			errorMessage = "Missing \"" + TEST_OUTPUT_PARAM + "\" parameter in run configurations";	
+		}
+		
+		// Throw validation error if any message has been set
+		if(errorMessage.length() > 0) {
+			throw new InvalidParameterException(errorMessage);
+		}
 	}
 
 	
@@ -82,9 +98,14 @@ public class Orchestrator extends AbstractTransformation {
 	 * @param args
 	 */
 	private static void extractInputParameters(String[] args) {
+		System.out.println("Extracting runtime parameters...");
 		for (String s : args) {
 			if (s.contains(TEST_INPUT_PARAM)) {
-				test_input_value = s.split("=")[1];
+				test_input_param_value = s.split("=")[1];
+				System.out.println("Input data will be read from: " + test_input_param_value);
+			} else if(s.contains(TEST_OUTPUT_PARAM)) {
+				test_output_param_value = s.split("=")[1];
+				System.out.println("Output data will be written to: " + test_output_param_value);
 			}
 		}
 	}
