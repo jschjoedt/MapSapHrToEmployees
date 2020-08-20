@@ -59,6 +59,12 @@ public class Mapper {
 	}
 	
 	
+	/**
+	 * Map info type 0016.
+	 * @param employee
+	 * @param type
+	 * @return
+	 */
 	private static DO_EMPLOYEE mapInfoType0016(DO_EMPLOYEE employee, DO_E1PITYP type) {
 		employee = createFildInfo("1099", type.E1P0016.CTTYP, employee);
 		employee = createFildInfo("1133", type.E1P0016.CTEDT, employee);
@@ -67,6 +73,13 @@ public class Mapper {
 	}
 
 
+	/**
+	 * Map info type 0041.
+	 * @param employee
+	 * @param type
+	 * @return
+	 * @throws ParseException
+	 */
 	private static DO_EMPLOYEE mapInfoType0041(DO_EMPLOYEE employee, DO_E1PITYP type) throws ParseException {
 		employee = createFildInfo("37", Util.formatDate(type.E1P0041.DAT02), employee);
 		employee = createFildInfo("38", Util.formatDate(type.E1P0041.DAT05), employee);
@@ -76,6 +89,12 @@ public class Mapper {
 	}
 
 
+	/**
+	 * Map info type 0009.
+	 * @param employee
+	 * @param type
+	 * @return
+	 */
 	private static DO_EMPLOYEE mapInfoType0009(DO_EMPLOYEE employee, DO_E1PITYP type) {
 		employee = createFildInfo("1034", type.E1P0009.BANKL, employee);
 		employee = createFildInfo("1036", type.E1P0009.BANKN, employee);
@@ -84,7 +103,13 @@ public class Mapper {
 		return employee;
 	}
 
-
+	
+	/**
+	 * Map info type 0007.
+	 * @param employee
+	 * @param type
+	 * @return
+	 */
 	private static DO_EMPLOYEE mapInfoType0007(DO_EMPLOYEE employee, DO_E1PITYP type) {
 		employee = createFildInfo("40", type.E1P0007.EMPCT, employee);
 		employee = createFildInfo("51", type.E1P0007.WOSTD, employee);
