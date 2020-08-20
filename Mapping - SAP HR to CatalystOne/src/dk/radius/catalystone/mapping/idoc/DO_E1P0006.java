@@ -7,4 +7,5 @@ public class DO_E1P0006 {
 	public String PSTLZ;
 	public String LAND1;
 	public String TELNR;
+	public String INDRL;
 }

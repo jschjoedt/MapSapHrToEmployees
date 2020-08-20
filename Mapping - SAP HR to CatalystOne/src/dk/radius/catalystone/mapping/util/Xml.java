@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.ParseException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -48,8 +49,9 @@ public class Xml {
 	 * Map SAP IDoc pojo's to corresponding CatalystOne pojo's.
 	 * @param hrmd_a07
 	 * @return
+	 * @throws ParseException 
 	 */
-	public static DO_EMPLOYEES map(DO_HRMD_A07 hrmd_a07) {
+	public static DO_EMPLOYEES map(DO_HRMD_A07 hrmd_a07) throws ParseException {
 		DO_EMPLOYEES employees = Mapper.start(hrmd_a07);
 
 		return employees;

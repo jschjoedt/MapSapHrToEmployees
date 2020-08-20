@@ -21,9 +21,21 @@ public class DO_E1PITYP {
 	@XmlElement(name = "E1P0006")
 	public List<DO_E1P0006> E1P0006;
 	
+	@XmlElement(name = "E1P0007")
+	public DO_E1P0007 E1P0007;
+	
+	@XmlElement(name = "E1P0009")
+	public DO_E1P0009 E1P0009;
+	
+	@XmlElement(name = "E1P0016")
+	public DO_E1P0016 E1P0016;
+	
+	@XmlElement(name = "E1P0041")
+	public DO_E1P0041 E1P0041;
+	
 	@XmlElement(name = "E1P0105")
 	public List<DO_E1P0105> E1P0105;
-		
+					
 	public DO_E1PITYP() {
 		E1P0105 = new ArrayList<DO_E1P0105>();
 	}

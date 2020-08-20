@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.ParseException;
 import java.time.Duration;
 import java.time.Instant;
 
@@ -116,8 +117,9 @@ public class Orchestrator extends AbstractTransformation {
 	 * @param in
 	 * @param out
 	 * @throws JAXBException
+	 * @throws ParseException 
 	 */
-	public void execute(InputStream in, OutputStream out) throws JAXBException {
+	public void execute(InputStream in, OutputStream out) throws JAXBException, ParseException {
 		// Serialize IDoc XML data into corresponding pojo's
 		DO_HRMD_A07 hrmd_a07 = Xml.serialize(in);
 		
@@ -138,7 +140,9 @@ public class Orchestrator extends AbstractTransformation {
 			// Call main mapping method
 			this.execute(in.getInputPayload().getInputStream(), out.getOutputPayload().getOutputStream());
 		} catch (JAXBException e) {
-			throw new StreamTransformationException(e.getMessage());
+			throw new StreamTransformationException("JAXB data parsing error: " + e.getMessage());
+		} catch (ParseException e) {
+			throw new StreamTransformationException("Error parsing date: " + e.getMessage());
 		}		
 	}
 }
